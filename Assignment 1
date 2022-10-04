@@ -1,26 +1,25 @@
 from typing import List
 
 class Person:
-    def __init__(self, name: str, age: int, is_admin: bool = False):
+    def __init__(self, name: str, grade: int, is_admin: bool = False):
         self.name = name
-        self.age = age
+        self.grade = grade
         self.is_admin = is_admin
        
     def __repr__(self):
         cls_name = self.__class__.__name__
-        return f"{cls_name}(name={self.name}, age={self.age}, is_admin={self.is_admin})"
+        return f"{cls_name}(name={self.name}, grade={self.grade}, is_admin={self.is_admin})"
        
 class Student(Person):
-    def __init__(self, name: str, age: int):
-        super().__init__(name, age) # is_admin is False by default
+    def __init__(self, name: str, grade: int):
+        super().__init__(name, grade) # is_admin is False by default
            
         # Other methods omitted for brevity
        
 class Course:
-    def __init__(self, name: str, number: int, grade: str):
+    def __init__(self, name: str, number: int):
         self.name = name
         self.number = number
-        self.grade = grade
         self.students: List[Student] = []
            
     def enroll(self, student: Student):
@@ -30,33 +29,32 @@ class Course:
         self.students.remove(student)
            
 class Admin(Person):
-    def __init__(self, name: str, age: int):
-        super().__init__(name, age, is_admin=True)
+    def __init__(self, name: str, grade: int):
+        super().__init__(name, grade, is_admin=True)
            
-    def create_course(self, name: str, number: int, grade: str) -> Course:
-        return Course(name, number, grade)
+    def create_course(self, name: str, number: int) -> Course:
+        return Course(name, number)
        
-    def update_course(self, course: Course, name: str, number: int, grade:str):
+    def update_course(self, course: Course, name: str, number: int):
         course.name = name
         course.number = number
-        course.grade = grade
-       
+               
         # Other methods omitted for brevity
        
 if __name__ == "__main__":
     admin = Admin("John", 30)
-    course_1 = admin.create_course("Math", 101, "A")
-    course_2 = admin.create_course("Chemistry", 102, "B")
-    student_1 = Student("Masoud", 35)
-    student_2 = Student("Tina", 25)
-    student_3 = Student("Vahid", 33)
-    student_4 = Student("Edi", 32)
+    course_1 = admin.create_course("Math", 101)
+    course_2 = admin.create_course("Chemistry", 102)
+    student_1 = Student("Masoud", 20)
+    student_2 = Student("Tina", 18)
+    student_3 = Student("Vahid", 17)
+    student_4 = Student("Edi", 15)
     course_1.enroll(student_1)
     course_1.enroll(student_2)
     course_2.enroll(student_3)
     course_2.enroll(student_4)
-    print(course_2.students)  
-    print(course_1.students[0].name, course_1.students[0].age) 
+    print(course_2.students) 
+    print(course_1.students[0].name, course_1.students[0].grade) 
     course_1.unenroll(student_1)
-    print(course_1.name, course_1.number, course_1.grade)
-    print(course_1.students[0].name, course_1.students[0].age)
+    print(course_1.name, course_1.number)
+    print(course_1.students[0].name, course_1.students[0].grade)
