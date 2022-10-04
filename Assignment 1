@@ -1,151 +1,62 @@
-class Course():
-    # Constructor
-	def __init__(self, course_name, course_id):               
-		self.course_name = course_name
-		self.course_id = course_id
-		
-	# Function to create and append new course
-	def Add_course(self, Name, Number):
+from typing import List
 
-# use ' int(input()) ' method to take input from user
-		OR = Course(Name, Number)
-		ls.append(OR)
-
-	# Function to display course details
-	def display(self, OR):
-		print("Name : ", OR.course_name)
-		print("ID : ", OR.course_id)
-		print("\n")
-
-	# Search Function
-	def search(self, cd):
-		for i in range(ls.__len__()):
-			if(ls[i].course_id == cd):
-				return i
-
-	# Delete Function
-	def delete(self, cd):
-		i = ori.search(cd)
-		del ls[i]
-
-	# Modification Function
-	def Modify(self, cd, No):
-		i = ori.search(cd)
-		Number = No
-		ls[i].course_id = Number
-
-
-# Create a list to add course
-ls = []
-# an object of Course class
-ori = Course('', 0)
-
-print("\nOperations used, ")
-print("\n1.Add Course details\n2.Display Course Details\n3.Search Details of a Course\n4.Delete Details of Course\n5.Modify Course Details")
-
-# ch = int(input("Enter choice:"))
-# if(ch == 1):
-ori.Add_course("Math", 32)
-ori.Add_course("Chemistry", 38)
-ori.Add_course("Science", 31)
-
-# elif(ch == 2):
-print("\n")
-print("\nList of Courses\n")
-for i in range(ls.__len__()):
-	ori.display(ls[i])
-
-# elif(ch == 3):
-ori.delete(38)
-print("number of items: ", ls.__len__())
-print("List after deletion")
-for i in range(ls.__len__()):
-	ori.display(ls[i])
-
-# elif(ch == 4):
-ori.Modify(31, 38)
-print("number of items: ", ls.__len__())
-print("List after modification")
-for i in range(ls.__len__()):
-	ori.display(ls[i])
-
-
-class Student(Course):
-    # Constructor
-	def __init__(self, name, ID, g1, g2):               
-		self.name = name
-		self.ID = ID
-		self.g1 = g1
-		self.g2 = g2
-
-	# Function to create and append new student
-	def accept(self, Name, IDno, grade1, grade2):
-
-# use ' int(input()) ' method to take input from user
-		ob = Student(Name, IDno, grade1, grade2)
-		ls.append(ob)
-
-	# Function to display student details
-	def display(self, ob):
-		print("Name : ", ob.name)
-		print("IDno : ", ob.ID)
-		print("grade1 : ", ob.g1)
-		print("grade2 : ", ob.g2)
-		print("\n")
-
-	# Search Function
-	def search(self, idn):
-		for i in range(ls.__len__()):
-			if(ls[i].ID == idn):
-				return i
-
-	# Delete Function
-	def delete(self, idn):
-		i = obj.search(idn)
-		del ls[i]
-
-	# Modify Function
-	def update(self, idn, No):
-		i = obj.search(idn)
-		IDn = No
-		ls[i].ID = IDn
-
-
-# Create a list to add Students
-ls = []
-# an object of Student class
-obj = Student('', 0, 0, 0)
-
-print("\nOperations used, ")
-print("\n1.Accept Student details\n2.Display Student Details\n3.Search Details of a Student\n4.Delete Details of Student\n5.Update Student Details\n6.Exit")
-
-# ch = int(input("Enter choice:"))
-# if(ch == 1):
-obj.accept("Edi", 3002, 100, 100)
-obj.accept("Vahid", 3008, 90, 80)
-obj.accept("Masoud", 3001, 50, 80)
-
-# elif(ch == 2):
-print("\n")
-print("\nList of Students\n")
-for i in range(ls.__len__()):
-	obj.display(ls[i])
-
-# elif(ch == 3):
-print("\n Student Found, ")
-s = obj.search(3002)
-obj.display(ls[s])
-
-# elif(ch == 4):
-obj.delete(3008)
-print("number of items: ",ls.__len__())
-print("List after deletion")
-for i in range(ls.__len__()):
-	obj.display(ls[i])
-
-# elif(ch == 5):
-obj.update(3001, 3008)
-print("number of items: ",ls.__len__())
-print("List after updation")
-for i in range(ls.__len__()):
-	obj.display(ls[i])
+class Person:
+    def __init__(self, name: str, age: int, is_admin: bool = False):
+        self.name = name
+        self.age = age
+        self.is_admin = is_admin
+       
+    def __repr__(self):
+        cls_name = self.__class__.__name__
+        return f"{cls_name}(name={self.name}, age={self.age}, is_admin={self.is_admin})"
+       
+class Student(Person):
+    def __init__(self, name: str, age: int):
+        super().__init__(name, age) # is_admin is False by default
+           
+        # Other methods omitted for brevity
+       
+class Course:
+    def __init__(self, name: str, number: int, grade: str):
+        self.name = name
+        self.number = number
+        self.grade = grade
+        self.students: List[Student] = []
+           
+    def enroll(self, student: Student):
+        self.students.append(student)
+           
+    def unenroll(self, student: Student):
+        self.students.remove(student)
+           
+class Admin(Person):
+    def __init__(self, name: str, age: int):
+        super().__init__(name, age, is_admin=True)
+           
+    def create_course(self, name: str, number: int, grade: str) -> Course:
+        return Course(name, number, grade)
+       
+    def update_course(self, course: Course, name: str, number: int, grade:str):
+        course.name = name
+        course.number = number
+        course.grade = grade
+       
+        # Other methods omitted for brevity
+       
+if __name__ == "__main__":
+    admin = Admin("John", 30)
+    course_1 = admin.create_course("Math", 101, "A")
+    course_2 = admin.create_course("Chemistry", 102, "B")
+    student_1 = Student("Masoud", 35)
+    student_2 = Student("Tina", 25)
+    student_3 = Student("Vahid", 33)
+    student_4 = Student("Edi", 32)
+    course_1.enroll(student_1)
+    course_1.enroll(student_2)
+    course_2.enroll(student_3)
+    course_2.enroll(student_4)
+    print(course_2.students)  
+    print(course_1.students[0].name, course_1.students[0].age) 
+    course_1.unenroll(student_1)
+    print(course_1.name, course_1.number, course_1.grade)
+    print(course_1.students[0].name, course_1.students[0].age)
